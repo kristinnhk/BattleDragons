@@ -21,6 +21,7 @@ public class DragonController : MonoBehaviour {
 	public float dragonHealth;
 	public float dragonEnergy;
 
+	private bool invincible = false;
 
 
 	public bool facingRight = true;
@@ -140,9 +141,18 @@ public class DragonController : MonoBehaviour {
 	}
 
 	public void takeDamage(float amount){
-		dragonHealth = Mathf.Clamp (dragonHealth-amount, minDragonHealth, maxDragonHealth);
-		if (dragonHealth == minDragonHealth) {
-			Debug.Log ("dragon is dead");
+		if (!invincible) {
+			dragonHealth = Mathf.Clamp (dragonHealth - amount, minDragonHealth, maxDragonHealth);
+			if (dragonHealth == minDragonHealth) {
+				Debug.Log ("dragon is dead");
+			}
+			invincible = true;
+			Invoke ("invincibilityFrames", 3);
+			//Create invincibility display
 		}
 	}
+	private void invincibilityFrames(){
+		invincible = false;
+	}
+
 }

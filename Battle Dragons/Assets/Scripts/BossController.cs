@@ -38,12 +38,13 @@ public class BossController : MonoBehaviour {
 		Vulnerable,
 		Moving,
 		Fireball,
-		LaserBeam
+		LaserBeam,
+		Dead
 	}
 
 	public enum BossPhaseType{
 		Phase1,
-		Phase2
+		Phase2//no time for phase 2 :(
 	}
 
 	// Use this for initialization
@@ -167,6 +168,12 @@ public class BossController : MonoBehaviour {
 
 			}
 			break;
+		case BossActionType.Dead:
+			transform.position = Vector3.MoveTowards (transform.position, transform.position+Vector3.up, Time.deltaTime);
+
+
+
+			break;
 		
 		}
 	}
@@ -187,14 +194,20 @@ public class BossController : MonoBehaviour {
 		bossHealth = Mathf.Clamp (bossHealth-amount, minBossHealth, maxBossHealth);
 		Debug.Log (bossHealth);
 		if (bossHealth == minBossHealth) {
-			Debug.Log ("boss is dead");
+			Dead ();
+
+			//Debug.Log ("boss is dead");
 		}
 	}
-
+	void Dead(){
+		thisAnimator.SetBool ("Dead", true);
+		laserBreath.SetActive (false);
+		currentState = BossActionType.Dead;
+	}
 	void OnTriggerEnter2D(Collider2D dragon) {
-		if (dragon.gameObject.tag == "Dragon") {
+		/*if (dragon.gameObject.tag == "Dragon") {
 			dragon.gameObject.GetComponent<DragonController> ().takeDamage (100f);
-		} 
+		} */
 	}
 
 
